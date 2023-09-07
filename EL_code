@@ -1,0 +1,38 @@
+
+{Daily Radarscreen.
+		Net percent change and Average of the Net percent change  }
+Inputs:
+	Length( 14 );
+
+Vars: 
+	Netchangepercent(0),
+	SumofArray(0),
+	AvgNetchangepercent(0),
+	ii(0),
+	Netpercent(0);
+	
+
+Arrays:
+	Netchangepercentarray[] (0);		
+
+
+For ii = Length downto 1
+	Begin 
+		If open[ii] >= close[ii] then Netchangepercent = ((open[ii]-close[ii])/open[ii]);  //percent change
+		If open[ii] < close[ii] then Netchangepercent = ((close[ii]-open[ii])/open[ii]);
+		
+		Array_setmaxindex(Netchangepercentarray, Length);
+		Netchangepercentarray[ii] = Netchangepercent;
+		SumofArray = Array_sum(Netchangepercentarray, 1, Length);
+		AvgNetchangepercent = SumofArray/Length;
+	End;
+	
+
+
+	{if close >= Last then Netpercent = ((close-last)/close) Else Netpercent = ((Last-close)/close);}
+Netpercent = ((last-close)/close);   //means close of the tick. if you have "update every tick" on.
+
+Plot2(AvgNetchangepercent, !("AvgNet%Change"));	
+Plot1(Netpercent, !("Net%Change"));
+	
+//print(dailyopen);
